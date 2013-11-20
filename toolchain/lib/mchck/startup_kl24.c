@@ -6,7 +6,7 @@
 #include <mchck-cdefs.h>
 
 #ifndef STACK_SIZE
-#define STACK_SIZE 0x400
+#define STACK_SIZE 0x200
 #endif
 
 __attribute__ ((__section__(".co_stack")))
@@ -92,11 +92,9 @@ void main(void);
 void
 Default_Reset_Handler(void)
 {
-	/* Disable Watchdog */
-	WDOG_UNLOCK = 0xc520;
-	WDOG_UNLOCK = 0xd928;
-	WDOG_STCTRLH &= ~WDOG_STCTRLH_WDOGEN_MASK;
-
+	/* disable watchdog */
+	*(uint32_t*)0x40048100 = 0;
+	
 #ifdef EXTERNAL_XTAL
         OSC_CR = OSC_CR_SC16P_MASK;
         MCG.c2.raw = ((struct MCG_C2_t){

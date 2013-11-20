@@ -76,9 +76,13 @@ static inline void
 jump_to_app(uintptr_t addr)
 {
         /* addr is in r0 */
-        __asm__("ldr sp, [%[addr], #0]\n"
-                "ldr pc, [%[addr], #4]"
-                :: [addr] "r" (addr));
+        
+         uintptr_t spp = addr;
+         uintptr_t pcp = addr+1;
+        
+        __asm__("mov sp, %[spp]\n"
+                "mov pc, %[pcp]"
+                :: [spp] "r" (spp) , [pcp] "r" (pcp) );
         /* NOTREACHED */
         __builtin_unreachable();
 }
