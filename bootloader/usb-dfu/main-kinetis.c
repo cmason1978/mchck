@@ -77,12 +77,18 @@ jump_to_app(uintptr_t addr)
 {
         /* addr is in r0 */
         
-         uintptr_t spp = addr;
-         uintptr_t pcp = addr+1;
+        // Update stack pointer from user code vector table
+        // Load user code reset handler and jump to the user code
+        __asm__("ldr     r2, [%[addr]]\n"
+        		"ldr     r1, [%[addr], #4]\n"
+			    "mov     sp, r2\n"
+				"bx      r1"
+				:: [addr] "r" (addr)
+				: "r1","r2");
         
-        __asm__("mov sp, %[spp]\n"
-                "mov pc, %[pcp]"
-                :: [spp] "r" (spp) , [pcp] "r" (pcp) );
+/*      __asm__("ldr sp, [%[addr], #0]\n"
+                "ldr pc, [%[addr], #4]"
+                :: [addr] "rw" (addr)), r0 ;*/
         /* NOTREACHED */
         __builtin_unreachable();
 }
