@@ -106,8 +106,8 @@ CFLAGS+=	-mcpu=${CPU_FAMILY} -msoft-float -mthumb -ffunction-sections -fdata-sec
 ifndef NO_LTO
 CFLAGS+=	-flto -fno-use-linker-plugin
 endif
-CPPFLAGS+=	-I${_libdir}CMSIS/Include -I. -I${_libdir}include/kinetis/${TARGET_FAMILY_SHORT}
-CPPFLAGS+=	-include ${_libdir}include/mchck_internal.h
+CPPFLAGS+=	-I${_libdir}/CMSIS/Include -I. -I${_libdir}include/kinetis/${TARGET_FAMILY_SHORT}
+CPPFLAGS+=	-include ${_libdir}/include/mchck_internal.h
 CPPFLAGS+=  -DTARGET=${TARGET} -DTARGET_FAMILY=${TARGET_FAMILY}
 
 LDFLAGS+=	-Wl,--gc-sections

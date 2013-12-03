@@ -90,6 +90,20 @@ const struct usbd_device cdc_device = {
 void
 main(void)
 {
+#if TARGET_FAMILY_SHORT==MKL24
+		pin_configure(GPIO_PTB0, SWD_MODE_OUTPUT);
+		pin_write(GPIO_PTB0, 1);
+		*(uint32_t*)0x4004803C |= 1 << 27; // turn on ADC0 
+		*(uint32_t*)0x40048038 |= 0x3E00; // turn on port control for all ports.
+		*(uint32_t*)0x4004803C |= 1; // turn on flash control.
+		*(uint32_t*)0x40048040 |= 1 << 8; // turn on DMA
+		*(uint32_t*)0x4003B000 = 0x1F; // disable ADC.
+		*(uint32_t*)0x4004B008 = 0; // disable PTC2
+		*(uint32_t*)0x4004B00C = 0; // disable PTC3
+#endif /* TARGET_FAMILY_SHORT==kl24 */
+		signal_led();
+		signal_led();
+		signal_led();
         usb_init(&cdc_device);
         sys_yield_for_frogs();
 }

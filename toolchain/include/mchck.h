@@ -32,6 +32,7 @@ extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss, _app_rom;
 
 #include <intnums.h>
 
+#include <kinetis/variants.h>
 #include <kinetis/ftfl.h>
 #include <kinetis/usbotg.h>
 #include <kinetis/sim.h>

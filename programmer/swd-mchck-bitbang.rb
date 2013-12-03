@@ -1,3 +1,4 @@
+$: << File.realpath('..', __FILE__)
 require 'log'
 require 'serialport'
 require 'swd-bitbang'
@@ -10,6 +11,8 @@ class MchckBitbangSwd < BitbangSwd
   CMD_READ_WORD = 0x10
   CMD_READ_BITS = 0x20
   CMD_CYCLE_CLOCK = 0x28
+  CMD_SWDIO_WRITE = 0x30
+  CMD_SWDCLK_WRITE = 0x32
 
   def initialize(opt = {})
     super
@@ -126,6 +129,15 @@ class MchckBitbangSwd < BitbangSwd
     Log(:phys, 3){ ['read:', hexify(data)] }
     data
   end
+
+  def write_swdio(bit)
+    @outbuf << (CMD_SWDIO_WRITE | (bit & 1))
+  end
+
+  def write_swdclk(bit)
+    @outbuf << (CMD_SWDCLK_WRITE | (bit & 1))
+  end
+
 end
 
 if $0 == __FILE__

@@ -11,7 +11,7 @@
 /* Generic ARM M4 */
 VH(1, Reset, Default_Reset_Handler)
 V(2, NMI)
-V(3, Hard_Fault)
+VH(3, Hard_Fault, HardFault_Handler)
 #ifndef SHORT_ISR
 V(11, SVCall)
 V(12, DebugMonitor)

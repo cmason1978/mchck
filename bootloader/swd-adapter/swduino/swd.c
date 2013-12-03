@@ -98,6 +98,16 @@ process_command(const uint8_t *buf, size_t len, int *outpipe_full)
                 case 0x28 ... 0x2f: /* cycle clock */
                         read_bits((cmd & 7) + 1, 1);
                         break;
+                        
+                case 0x30 ... 0x31: /* SWDIO write */
+                		pin_configure(SWD_DIO_PIN, SWD_MODE_OUTPUT);
+                		pin_write(SWD_DIO_PIN, cmd & 1);
+                		break;
+
+				case 0x32 ... 0x33: /* SWDCLK write */
+						pin_configure(SWD_DIO_PIN, SWD_MODE_OUTPUT);
+                		pin_write(SWD_CLK_PIN, cmd & 1);
+                		break;
 
                 case 0x90:       /* write word */
                         if (len < 4)

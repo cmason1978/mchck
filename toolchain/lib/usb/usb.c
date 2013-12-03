@@ -419,12 +419,21 @@ usb_handle_control(void *data, ssize_t len, void *cbdata)
 			break;
 		case USB_DESC_CONFIG:
 			fail = usb_tx_config_desc(req->wValue & 0xff, req->wLength);
+			if (fail) {
+				__asm("BKPT");
+			}
 			break;
 		case USB_DESC_STRING:
 			fail = usb_tx_string_desc(req->wValue & 0xff, req->wLength);
+			if (fail) {
+				__asm("BKPT");
+			}
 			break;
 		default:
 			fail = -1;
+			if (fail) {
+				__asm("BKPT");
+			}
 			break;
 		}
 		/* we set fail already, so we can go directly to `err' */
@@ -435,8 +444,10 @@ usb_handle_control(void *data, ssize_t len, void *cbdata)
 		break;
 
 	case USB_CTRL_REQ_SET_CONFIGURATION:
-		if (usb_set_config(req->wValue) < 0)
+		if (usb_set_config(req->wValue) < 0) {
+			__asm("BKPT");
 			goto err;
+		}
 		break;
 
 	case USB_CTRL_REQ_GET_INTERFACE:
